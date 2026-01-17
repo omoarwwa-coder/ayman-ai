@@ -21,6 +21,7 @@ export const UI_STRINGS: Record<string, any> = {
     recipeBook: "Collection",
     profile: "Profile",
     medicalAi: "Medical AI",
+    nearby: "Nearby Healthy",
     home: "Home",
     calories: "Calories",
     protein: "Protein",
@@ -59,7 +60,10 @@ export const UI_STRINGS: Record<string, any> = {
     aiInsights: "AI Insights",
     cookingTips: "Cooking Tips",
     savedToCollection: "Saved to Collection",
-    numServings: "Number of Servings"
+    numServings: "Number of Servings",
+    findingNearby: "Finding healthy spots nearby...",
+    locationError: "Could not access location",
+    nearbyHealthyPlaces: "Nearby Healthy Places"
   },
   ar: {
     appTitle: "نوتري آي",
@@ -76,6 +80,7 @@ export const UI_STRINGS: Record<string, any> = {
     recipeBook: "المجموعة",
     profile: "الملف الشخصي",
     medicalAi: "ذكاء طبي",
+    nearby: "أماكن صحية",
     home: "الرئيسية",
     calories: "سعرات",
     protein: "بروتين",
@@ -114,7 +119,10 @@ export const UI_STRINGS: Record<string, any> = {
     aiInsights: "رؤى الذكاء الاصطناعي",
     cookingTips: "نصائح الطبخ",
     savedToCollection: "تم الحفظ في المجموعة",
-    numServings: "عدد الحصص"
+    numServings: "عدد الحصص",
+    findingNearby: "البحث عن أماكن صحية قريبة...",
+    locationError: "تعذر الوصول إلى الموقع",
+    nearbyHealthyPlaces: "أماكن صحية قريبة"
   },
   fr: {
     appTitle: "NutriAI",
@@ -131,6 +139,7 @@ export const UI_STRINGS: Record<string, any> = {
     recipeBook: "Collection",
     profile: "Profil",
     medicalAi: "IA Médicale",
+    nearby: "Lieux Sains",
     home: "Accueil",
     calories: "Calories",
     protein: "Protéines",
@@ -169,6 +178,9 @@ export const UI_STRINGS: Record<string, any> = {
     aiInsights: "Aperçus de l'IA",
     cookingTips: "Conseils de cuisine",
     savedToCollection: "Enregistré dans la collection",
-    numServings: "Nombre de portions"
+    numServings: "Nombre de portions",
+    findingNearby: "Recherche de lieux sains...",
+    locationError: "Impossible d'accéder à la position",
+    nearbyHealthyPlaces: "Lieux sains à proximité"
   }
 };

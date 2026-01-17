@@ -2,6 +2,7 @@
   "name": "NutriAI - Intelligent Nutrition Analyzer",
   "description": "An AI-powered nutrition analysis platform that scans food products, provides personalized health insights, and tracks daily calorie intake based on your unique profile.",
   "requestFramePermissions": [
-    "camera"
+    "camera",
+    "geolocation"
   ]
 }

@@ -153,5 +153,39 @@ export const geminiService = {
       config: { systemInstruction }
     });
     return response.text;
+  },
+
+  searchNearbyHealthyPlaces: async (lat: number, lng: number, lang: string) => {
+    const prompt = `List top 5 healthy food restaurants or healthy grocery stores near my location. Language: ${lang}. Provide a brief reason why each is healthy. Include the place name and health focus.`;
+    
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: prompt,
+        config: {
+          tools: [{ googleMaps: {} }],
+          toolConfig: {
+            retrievalConfig: {
+              latLng: {
+                latitude: lat,
+                longitude: lng
+              }
+            }
+          }
+        },
+      });
+
+      const text = response.text;
+      const chunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
+      const links = chunks.filter((c: any) => c.maps).map((c: any) => ({
+        title: c.maps.title,
+        uri: c.maps.uri
+      }));
+
+      return { text, links };
+    } catch (error) {
+      console.error("Maps grounding error:", error);
+      return { text: "Could not find nearby places at this time.", links: [] };
+    }
   }
 };

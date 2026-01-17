@@ -12,12 +12,13 @@ import RecipeForm from './components/RecipeForm';
 import RecipeResultView from './components/RecipeResultView';
 import RecipeBook from './components/RecipeBook';
 import MedicalChat from './components/MedicalChat';
+import NearbyPlaces from './components/NearbyPlaces';
 
 const App: React.FC = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [logs, setLogs] = useState<DailyLog[]>([]);
   const [savedRecipes, setSavedRecipes] = useState<SavedRecipe[]>([]);
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'scan' | 'profile' | 'recipe' | 'book' | 'medical'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'scan' | 'profile' | 'recipe' | 'book' | 'medical' | 'nearby'>('dashboard');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [currentAnalysis, setCurrentAnalysis] = useState<AnalysisResult | null>(null);
   const [currentRecipeAnalysis, setCurrentRecipeAnalysis] = useState<RecipeAnalysisResult | null>(null);
@@ -36,7 +37,18 @@ const App: React.FC = () => {
     }
     setLogs(storageService.getDailyLogs());
     setSavedRecipes(storageService.getSavedRecipes());
+    
+    // Auto-detect language if saved
+    const savedLang = localStorage.getItem('nutriai_lang');
+    if (savedLang && (savedLang === 'en' || savedLang === 'ar' || savedLang === 'fr')) {
+      setLang(savedLang as any);
+    }
   }, []);
+
+  const changeLanguage = (newLang: 'en' | 'ar' | 'fr') => {
+    setLang(newLang);
+    localStorage.setItem('nutriai_lang', newLang);
+  };
 
   const t = UI_STRINGS[lang];
 
@@ -123,6 +135,7 @@ const App: React.FC = () => {
         {activeTab === 'recipe' && <div className="pt-20"><RecipeForm onAnalyze={handleRecipeAnalysis} isAnalyzing={isAnalyzing} lang={lang} /></div>}
         {activeTab === 'book' && <div className="pt-20"><RecipeBook recipes={savedRecipes} onSelectRecipe={setSelectedSavedRecipe} onDeleteRecipe={handleDeleteRecipe} lang={lang} /></div>}
         {activeTab === 'medical' && <div className="pt-20 h-full"><MedicalChat user={user} lang={lang} /></div>}
+        {activeTab === 'nearby' && <div className="pt-20 h-full"><NearbyPlaces lang={lang} /></div>}
         {activeTab === 'profile' && (
           <div className="p-6">
             <h2 className="text-2xl font-black mb-6 text-slate-800">{t.profile}</h2>
@@ -142,7 +155,7 @@ const App: React.FC = () => {
                   {['en', 'ar', 'fr'].map(l => (
                     <button 
                       key={l}
-                      onClick={() => setLang(l as any)}
+                      onClick={() => changeLanguage(l as any)}
                       className={`flex-1 py-3 rounded-2xl font-bold uppercase transition-all ${lang === l ? 'bg-slate-900 text-white' : 'bg-slate-50 text-slate-400'}`}
                     >
                       {l}
@@ -164,9 +177,9 @@ const App: React.FC = () => {
           <i className="fas fa-house-chimney text-lg"></i>
           <span className="text-[10px] font-bold">{t.home}</span>
         </button>
-        <button onClick={() => setActiveTab('medical')} className={`flex flex-col items-center gap-1 transition-all ${activeTab === 'medical' ? 'text-blue-500' : 'text-slate-400 opacity-60'}`}>
-          <i className="fas fa-user-md text-lg"></i>
-          <span className="text-[10px] font-bold">{t.medicalAi}</span>
+        <button onClick={() => setActiveTab('nearby')} className={`flex flex-col items-center gap-1 transition-all ${activeTab === 'nearby' ? 'text-blue-500' : 'text-slate-400 opacity-60'}`}>
+          <i className="fas fa-location-dot text-lg"></i>
+          <span className="text-[10px] font-bold">{t.nearby}</span>
         </button>
         <div className="relative -top-8">
            <button onClick={() => setActiveTab('scan')} className={`w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all active:scale-90 border-4 border-white ${activeTab === 'scan' ? 'bg-emerald-500 text-white' : 'bg-slate-900 text-white'}`}>
@@ -177,9 +190,9 @@ const App: React.FC = () => {
           <i className="fas fa-bookmark text-lg"></i>
           <span className="text-[10px] font-bold">{t.recipeBook}</span>
         </button>
-        <button onClick={() => setActiveTab('profile')} className={`flex flex-col items-center gap-1 transition-all ${activeTab === 'profile' ? 'text-emerald-500' : 'text-slate-400 opacity-60'}`}>
-          <i className="fas fa-user-circle text-lg"></i>
-          <span className="text-[10px] font-bold">{t.profile}</span>
+        <button onClick={() => setActiveTab('medical')} className={`flex flex-col items-center gap-1 transition-all ${activeTab === 'medical' ? 'text-blue-600' : 'text-slate-400 opacity-60'}`}>
+          <i className="fas fa-user-md text-lg"></i>
+          <span className="text-[10px] font-bold">{t.medicalAi}</span>
         </button>
       </nav>
 
